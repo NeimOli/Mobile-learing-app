@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:season_sir_mobileapp/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class loginpage extends StatefulWidget{
@@ -128,6 +129,7 @@ class loginpageState extends State<loginpage>{
                         onTap: (){
                           if(_phonenumber.text != null && _password != null){
                             storeinstorage();
+                            Navigator.of(context).pushNamed(AppRoute.conversation);
                           }
                       },
 
