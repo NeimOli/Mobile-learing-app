@@ -11,7 +11,7 @@ class loginpage extends StatefulWidget{
 class loginpageState extends State<loginpage>{
   TextEditingController _phonenumber = new TextEditingController();
   TextEditingController _password = new TextEditingController();
-
+  bool isloading = false;
 
   @override
   void initState() {
@@ -21,20 +21,33 @@ class loginpageState extends State<loginpage>{
   }
 
   readfromStorage() async {
+    isloading = true;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var phonenumber = prefs.getString("phonenumber");
     var password = prefs.getString("password");
     if (phonenumber != null && password !=null) {
-      _phonenumber.text =phonenumber;
-      _password.text = password;
+      setState(() {
+        _phonenumber.text = phonenumber;
+        _password.text = password;
+      });
+    } else{
+      setState(() {
+        isloading = false;
+      });
     }
   }
 
   storeinstorage() async {
+    setState(() {
+      isloading = true;
+    });
     final SharedPreferences prefs =
     await SharedPreferences.getInstance();
     prefs.setString("phonenumber", _phonenumber.text);
     prefs.setString("password", _password.text);
+    setState(() {
+      isloading = false;
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -99,13 +112,23 @@ class loginpageState extends State<loginpage>{
                       decoration: const InputDecoration(border: InputBorder.none ),
                       style: const TextStyle(color: Colors.black,),
                       maxLines: 1,
+                      onSubmitted: (txt){
+                        if(_phonenumber.text != null && _password != null){
+                          storeinstorage();
+                        }
+                      },
 
                     ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Center(
+                      GestureDetector(
+                        onTap: (){
+                          if(_phonenumber.text != null && _password != null){
+                            storeinstorage();
+                          }
+                      },
 
                         child: Container(
                           margin: EdgeInsets.all(15),
