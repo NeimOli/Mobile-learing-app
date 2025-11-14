@@ -123,6 +123,7 @@ class loginpageState extends State<loginpage>{
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      isloading?const CircularProgressIndicator():
                       GestureDetector(
                         onTap: (){
                           if(_phonenumber.text != null && _password != null){
