@@ -1,142 +1,132 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class loginpage extends StatefulWidget {
-  const loginpage({super.key});
+class loginpage extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+    return loginpageState();
+  }
+}
+class loginpageState extends State<loginpage>{
+  TextEditingController _phonenumber = new TextEditingController();
+  TextEditingController _password = new TextEditingController();
+
 
   @override
-  State<loginpage> createState() => _LoginPageState();
-}
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    readfromStorage();
+  }
 
-class _LoginPageState extends State<loginpage> {
-  final TextEditingController _phoneNumber = TextEditingController();
-  final TextEditingController _password = TextEditingController();
+  readfromStorage() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var phonenumber = prefs.getString("phonenumber");
+    var password = prefs.getString("password");
+    if (phonenumber != null && password !=null) {
+      _phonenumber.text =phonenumber;
+      _password.text = password;
+    }
+  }
 
+  storeinstorage() async {
+    final SharedPreferences prefs =
+    await SharedPreferences.getInstance();
+    prefs.setString("phonenumber", _phonenumber.text);
+    prefs.setString("password", _password.text);
+  }
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
+    var size = MediaQuery.of(context).size; // screen size
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.person, size: 80, color: Colors.black87),
-              const SizedBox(height: 32),
 
-              // Login container
-              Container(
-                width: size.width * 0.9,
-                padding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 28),
-                decoration: BoxDecoration(
-                  color: Colors.lightGreen,
-                  borderRadius: BorderRadius.circular(25),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Sign In",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-                    // Phone Number Field
-                    const Text(
-                      "Phone Number",
-                      style: TextStyle(color: Colors.black, fontSize: 14),
-                    ),
-                    const SizedBox(height: 6),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: TextField(
-                        controller: _phoneNumber,
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                          contentPadding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                          border: InputBorder.none,
-                          hintText: "Enter your phone number",
-                        ),
-                        style: const TextStyle(color: Colors.black87),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Password Field
-                    const Text(
-                      "Password",
-                      style: TextStyle(color: Colors.black, fontSize: 14),
-                    ),
-                    const SizedBox(height: 6),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: TextField(
-                        controller: _password,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          contentPadding:
-                          EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                          border: InputBorder.none,
-                          hintText: "Enter your password",
-                        ),
-                        style: const TextStyle(color: Colors.black87),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-
-                    // Login Button
-                    Center(
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.brown,
-                            padding: const EdgeInsets.symmetric(vertical: 14),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            elevation: 4,
-                          ),
-                          child: const Text(
-                            "Login",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+      body: Container(
+        width: size.width,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(Icons.person,size: 50,color: Colors.black,),
+            Container(
+              height: size.height/2.5,
+              width: size.width/1.1,
+              padding: EdgeInsets.all(25),
+              decoration: BoxDecoration(
+                color: Colors.lightGreen,
+                borderRadius: BorderRadius.circular(25),
               ),
-            ],
-          ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Signin",style: TextStyle(color: Colors.white,fontSize: 40),),
+                  Text("Phone Number",
+                    style: TextStyle(color: Colors.black,
+                        fontSize: 14),),
+                  Container(
+                    width: size.width/1.2,
+                    margin: EdgeInsets.all(5),
+                    padding: EdgeInsets.only(left: 10),
+                    decoration: BoxDecoration(
+                        color: Colors.white
+                        ,borderRadius:BorderRadius.circular(10)
+                    ),
+                    child: TextField(
+                      controller: _phonenumber,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(border: InputBorder.none ),
+                      style: const TextStyle(color: Colors.black,),
+                      maxLines: 1,
+
+                    ),
+                  ),
+                  Text("Password",
+                    style: TextStyle(color: Colors.black,
+                        fontSize: 14),),
+                  Container(
+                    width: size.width/1.2,
+                    margin: EdgeInsets.all(5),
+                    padding: EdgeInsets.only(left: 10),
+                    decoration: BoxDecoration(
+                        color: Colors.white
+                        ,borderRadius:BorderRadius.circular(10)
+                    ),
+                    child: TextField(
+                      controller: _password,
+                      obscureText: true,
+                      keyboardType: TextInputType.text,
+                      decoration: const InputDecoration(border: InputBorder.none ),
+                      style: const TextStyle(color: Colors.black,),
+                      maxLines: 1,
+
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+
+                        child: Container(
+                          margin: EdgeInsets.all(15),
+                          padding: EdgeInsets.only(left:20,right: 20,top: 10,bottom: 10),
+                          decoration: BoxDecoration(
+                              color: Colors.brown,
+                              borderRadius: BorderRadius.circular(15)
+                          ),
+                          child: Text("Login",style: TextStyle(color: Colors.white,
+                              fontSize: 16,fontWeight: FontWeight.bold),),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );
   }
+
 }
