@@ -31,6 +31,11 @@ class loginpageState extends State<loginpage>{
         _phonenumber.text = phonenumber;
         _password.text = password;
       });
+
+      Future.delayed(const Duration(
+        seconds: 1)).whenComplete((){
+          Navigator.of(context).pushNamed(AppRoute.conversation);
+      });
     } else{
       setState(() {
         isloading = false;

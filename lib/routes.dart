@@ -1,3 +1,4 @@
+import 'package:season_sir_mobileapp/gridview.dart';
 import 'package:season_sir_mobileapp/views/chatapp/Chats.dart';
 import 'package:season_sir_mobileapp/views/chatapp/conversations.dart';
 import 'package:season_sir_mobileapp/views/demoapp/loginpage.dart';
@@ -16,11 +17,14 @@ class AppRoute{
   static const String chats = '/chats';
   static const String esewa = '/esewa';
   static const String maps = '/maps';
+  static const String signup = '/signup';
   static const String webview ='/webview';
+  static const String gridapppage ='/grid';
 
   static getAppRoutes() => {
     login: (context) => loginpage(),
     dashboardroute: (context) => const dashboard(),
+    gridapppage: (context) => const GridViewApp(),
     detailPage: (context) => const detailpage(),
     conversation: (context) => Conversations(),
     chats: (context) => Chats(),
